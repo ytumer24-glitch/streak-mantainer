@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Loop — build habits that actually stick</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#101a13;
+    --bg-card:#172219;
+    --line:#26332a;
+    --lime:#b6ff5e;
+    --lime-dim:#7c9a5a;
+    --text:#edf1e8;
+    --text-dim:#93a08c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);}
+  body{
+    background:var(--bg);color:var(--text);
+    font-family:'Inter',system-ui,sans-serif;line-height:1.55;
+    padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+    overflow-x:hidden;
+  }
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:-0.01em;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 28px;}
+
+  header{display:flex;align-items:center;justify-content:space-between;padding:26px 28px;max-width:1100px;margin:0 auto;}
+  .logo{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;}
+  .logo span{color:var(--lime);}
+  nav a{text-decoration:none;color:var(--text-dim);font-size:0.92rem;margin-left:26px;transition:color .2s;}
+  nav a:hover{color:var(--text);}
+
+  /* HERO */
+  .hero{padding:64px 0 90px;position:relative;overflow:hidden;}
+  .hero-grid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:52px;align-items:center;}
+  .eyebrow{color:var(--lime-dim);font-size:0.9rem;margin-bottom:16px;}
+  h1.headline{font-size:clamp(2.1rem,4.8vw,3.2rem);line-height:1.1;max-width:12ch;}
+  .hero p.sub{margin-top:20px;max-width:40ch;color:var(--text-dim);font-size:1.03rem;}
+  .cta-row{margin-top:30px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+  .btn-primary{background:var(--lime);color:#0e1610;font-weight:600;border:none;padding:14px 26px;border-radius:3px;font-size:0.95rem;cursor:pointer;transition:transform .15s,background .2s;}
+  .btn-primary:hover{background:#c9ff8a;transform:translateY(-1px);}
+  .btn-primary:focus-visible{outline:2px solid var(--lime);outline-offset:3px;}
+  .cta-note{color:var(--text-dim);font-size:0.86rem;}
+
+  /* chart card */
+  .chart-card{background:var(--bg-card);border:1px solid var(--line);border-radius:8px;padding:26px;}
+  .chart-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px;}
+  .chart-head h3{font-size:1rem;color:var(--text);}
+  .chart-streak{color:var(--lime);font-size:0.9rem;font-weight:600;}
+  .chart-svg{width:100%;height:auto;display:block;}
+  .chart-grid line{stroke:var(--line);}
+  .chart-line{fill:none;stroke:var(--lime);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
+  .chart-fill{fill:url(#lineGrad);opacity:0.5;}
+  .chart-dot{fill:var(--lime);}
+  .chart-axis{fill:var(--text-dim);font-size:10px;font-family:'Inter',sans-serif;}
+
+  /* SECTIONS */
+  section{padding:60px 0;border-top:1px solid var(--line);}
+  .section-head{max-width:54ch;margin-bottom:40px;}
+  .section-head h2{font-size:clamp(1.5rem,3vw,2rem);}
+  .section-head p{color:var(--text-dim);margin-top:12px;}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+  .step{background:var(--bg);padding:30px 26px;}
+  .step .num{font-family:'Space Grotesk',sans-serif;color:var(--lime-dim);font-size:0.85rem;margin-bottom:14px;}
+  .step h3{font-size:1.1rem;margin-bottom:8px;}
+  .step p{color:var(--text-dim);font-size:0.94rem;}
+
+  /* TESTIMONIALS CAROUSEL */
+  .carousel{position:relative;max-width:640px;margin:0 auto;}
+  .carousel-track-wrap{overflow:hidden;border-radius:8px;}
+  .carousel-track{display:flex;transition:transform .4s ease;}
+  .slide{min-width:100%;background:var(--bg-card);border:1px solid var(--line);padding:36px 34px;border-radius:8px;}
+  .slide p.quote{font-size:1.1rem;line-height:1.6;color:var(--text);}
+  .slide .who{margin-top:20px;display:flex;align-items:center;gap:12px;}
+  .avatar{width:38px;height:38px;border-radius:50%;background:var(--lime);color:#0e1610;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:0.9rem;}
+  .who-text .name{font-weight:600;font-size:0.92rem;}
+  .who-text .role{color:var(--text-dim);font-size:0.82rem;}
+  .carousel-controls{display:flex;justify-content:center;gap:10px;margin-top:22px;}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--line);border:none;cursor:pointer;padding:0;transition:background .2s;}
+  .dot.active{background:var(--lime);}
+  .dot:focus-visible{outline:2px solid var(--lime);outline-offset:2px;}
+
+  footer{border-top:1px solid var(--line);padding:56px 0 36px;}
+  .footer-cta{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;padding-bottom:34px;border-bottom:1px solid var(--line);margin-bottom:22px;}
+  .footer-cta h2{font-size:clamp(1.4rem,3vw,1.9rem);max-width:18ch;}
+  .foot-bottom{display:flex;justify-content:space-between;color:var(--text-dim);font-size:0.85rem;flex-wrap:wrap;gap:10px;}
+
+  @media (max-width:720px){
+    .hero-grid{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr;}
+    nav{display:none;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .btn-primary, .carousel-track{transition:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">L<span>oop</span></div>
+  <nav>
+    <a href="#how">How it works</a>
+    <a href="#stories">Stories</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Habit tracking, without the guilt trips</div>
+      <h1 class="headline">Small streaks, kept honestly, add up.</h1>
+      <p class="sub">Loop tracks the habits you actually choose — not a leaderboard, not a badge wall. Just a clear line going up, and a nudge before you break it.</p>
+      <div class="cta-row">
+        <button class="btn-primary">Start your first streak</button>
+        <span class="cta-note">Free for up to 5 habits</span>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-head">
+        <h3>Morning run — last 14 days</h3>
+        <span class="chart-streak">🔥 9-day streak</span>
+      </div>
+      <svg class="chart-svg" viewBox="0 0 320 150" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#b6ff5e" stop-opacity="0.45"/>
+            <stop offset="100%" stop-color="#b6ff5e" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <g class="chart-grid">
+          <line x1="0" y1="20" x2="320" y2="20"/>
+          <line x1="0" y1="60" x2="320" y2="60"/>
+          <line x1="0" y1="100" x2="320" y2="100"/>
+        </g>
+        <path class="chart-fill" d="M0,110 L23,95 L46,100 L69,70 L92,80 L115,55 L138,60 L161,40 L184,50 L207,30 L230,35 L253,20 L276,25 L299,15 L299,140 L0,140 Z"/>
+        <polyline class="chart-line" points="0,110 23,95 46,100 69,70 92,80 115,55 138,60 161,40 184,50 207,30 230,35 253,20 276,25 299,15"/>
+        <circle class="chart-dot" cx="299" cy="15" r="4"/>
+        <text class="chart-axis" x="0" y="148">Day 1</text>
+        <text class="chart-axis" x="280" y="148">Today</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Built for the habit, not the app</h2>
+      <p>Most trackers turn consistency into a game. Loop keeps it plain: log it, see the pattern, decide what's next.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num">01</div>
+        <h3>Pick one habit</h3>
+        <p>Name it in your own words — "morning run," not "cardio session." No categories to choose from.</p>
+      </div>
+      <div class="step">
+        <div class="num">02</div>
+        <h3>Log it in one tap</h3>
+        <p>A single tap marks the day done. No notes, no photos, no streak-saving purchases.</p>
+      </div>
+      <div class="step">
+        <div class="num">03</div>
+        <h3>Watch the line, not the badge</h3>
+        <p>A simple chart shows the last 90 days, so you can see your own pattern instead of chasing a score.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stories">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>People who kept their streak going</h2>
+    </div>
+    <div class="carousel">
+      <div class="carousel-track-wrap">
+        <div class="carousel-track" id="track">
+          <div class="slide">
+            <p class="quote">I've quit four fitness apps in three years. Loop is the first one that didn't feel like it wanted something from me — I just open it, tap, done.</p>
+            <div class="who">
+              <div class="avatar">MR</div>
+              <div class="who-text"><div class="name">Maya R.</div><div class="role">Runs 3x a week, 140-day streak</div></div>
+            </div>
+          </div>
+          <div class="slide">
+            <p class="quote">Seeing the actual chart instead of a badge changed how I think about missing a day. One gap doesn't erase the line.</p>
+            <div class="who">
+              <div class="avatar">DK</div>
+              <div class="who-text"><div class="name">Daniyal K.</div><div class="role">Reading habit, 62-day streak</div></div>
+            </div>
+          </div>
+          <div class="slide">
+            <p class="quote">No leaderboard, no friends to compare with. Turns out that's exactly what made me stick with it this time.</p>
+            <div class="who">
+              <div class="avatar">SL</div>
+              <div class="who-text"><div class="name">Sara L.</div><div class="role">Meditation, 210-day streak</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-controls" id="dots"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-cta">
+      <h2>Your next streak starts with one tap.</h2>
+      <button class="btn-primary">Start your first streak</button>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Loop</span>
+      <span>Built for habits you chose, not ones you were sold.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const track = document.getElementById('track');
+  const dotsWrap = document.getElementById('dots');
+  const slides = track.children.length;
+  let index = 0;
+
+  for(let i=0;i<slides;i++){
+    const d = document.createElement('button');
+    d.className = 'dot' + (i===0 ? ' active' : '');
+    d.setAttribute('aria-label', 'Go to testimonial ' + (i+1));
+    d.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(d);
+  }
+
+  function goTo(i){
+    index = (i + slides) % slides;
+    track.style.transform = 'translateX(-' + (index*100) + '%)';
+    [...dotsWrap.children].forEach((d,j)=> d.classList.toggle('active', j===index));
+  }
+
+  let timer = setInterval(()=>goTo(index+1), 5000);
+  dotsWrap.addEventListener('click', ()=>{ clearInterval(timer); timer = setInterval(()=>goTo(index+1), 5000); });
+})();
+</script>
+
+</body>
+</html>
